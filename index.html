@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Exo+2:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* ================= Tokens ================= */
 .app{
@@ -46,7 +46,17 @@ svg{display:block;flex:none}
 #view{flex:1;display:flex;flex-direction:column;min-height:0;position:relative}
 
 /* ================= Home: header ================= */
-.top{background:var(--surf);border-radius:0 0 28px 28px;padding:calc(var(--top) + 8px) 0 10px;position:relative;z-index:3}
+.top{background:var(--surf);border-radius:0 0 28px 28px;padding:calc(var(--top) + 8px) 0 10px;position:relative;z-index:3;transition:padding .3s}
+#strip{margin-top:-28px;position:relative;z-index:2;max-height:140px;overflow:hidden;transition:max-height .3s ease,margin .3s ease,opacity .25s}
+.acw{display:grid;grid-template-rows:1fr;transition:grid-template-rows .3s ease,opacity .25s}
+.acw>div{overflow:hidden;min-height:0}
+.hdl{display:block;width:100%;height:0;overflow:hidden;transition:height .3s}
+.hdl i{display:block;width:36px;height:4px;border-radius:4px;background:var(--line);margin:6px auto 0}
+.app[data-theme=dark] .hdl i{background:#4a4a4e}
+.app.cmp .acw{grid-template-rows:0fr;opacity:0}
+.app.cmp .top{padding-bottom:4px;cursor:pointer}
+.app.cmp .hdl{height:14px}
+.app.cmp #strip{max-height:0;margin-top:0;opacity:0}
 .hrow{display:flex;align-items:center;gap:6px;padding:0 14px 0 12px}
 .ib{width:40px;height:40px;display:grid;place-items:center;color:var(--acc);border-radius:12px;position:relative}
 .ib svg{width:24px;height:24px}
@@ -74,7 +84,7 @@ svg{display:block;flex:none}
 .dots i.on{width:14px;background:var(--mut)}
 
 /* ================= Status strip ================= */
-.strip{margin-top:-28px;padding:36px 14px 10px;position:relative;z-index:2;color:#fff}
+.strip{padding:36px 14px 10px;position:relative;z-index:2;color:#fff}
 .strip.orange{background:linear-gradient(90deg,#FF8A24,#F7621A 60%,#E9500F)}
 .strip.green{background:linear-gradient(90deg,#08C07B,#06B07C 60%,#0A8C7A);padding:34px 14px 8px;display:flex;align-items:center;justify-content:center;font-size:12.5px;position:relative}
 .strip.green .x{position:absolute;right:14px;bottom:6px;width:24px;height:24px;display:grid;place-items:center;opacity:.8}
@@ -204,6 +214,11 @@ svg{display:block;flex:none}
  radial-gradient(40% 40% at 15% 85%,rgba(150,84,36,.85),rgba(150,84,36,0) 70%),
  radial-gradient(35% 35% at 92% 80%,rgba(244,205,150,.9),rgba(244,205,150,0) 70%),
  linear-gradient(135deg,#C98A4B,#8C5426);background-size:cover;background-position:center}
+.cvr{position:absolute;inset:0;background:#B23354;display:flex;align-items:center;justify-content:center;padding:40px 22px 60px}
+.cvr svg.tx{position:absolute;inset:0;width:100%;height:100%;opacity:.55;mix-blend-mode:multiply}
+.cvr:before{content:"";position:absolute;inset:0;background:radial-gradient(80% 70% at 30% 60%,rgba(214,82,116,.55),transparent 70%),radial-gradient(60% 60% at 85% 20%,rgba(120,20,50,.35),transparent 70%)}
+.cvr svg.lt{position:relative;width:100%;max-width:350px;height:auto;filter:drop-shadow(0 1px 0 rgba(120,20,50,.25))}
+.cvr p{position:relative;font:600 29px/1.18 "Exo 2",Onest,sans-serif;color:rgba(236,226,232,.93);text-align:center;letter-spacing:.005em;text-shadow:0 1px 0 rgba(120,20,50,.25);filter:url(#knit)}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,0) 35%)}
 .hero .hb{position:absolute;top:calc(var(--top) + 6px);left:14px;right:14px;display:flex;justify-content:space-between;z-index:2}
 .gb{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.28);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.45);display:grid;place-items:center;color:#1f1f22}
@@ -511,7 +526,7 @@ function drawTop(){const el=document.getElementById('top');if(!el)return;
  if(st.piggy)accs.push(`<button class="acc" data-a="say" data-v="Копилка"><span class="l"><span class="bal">${rub(st.pig,2)}<i class="pg"></i></span><span class="sub" style="display:block">Копилка · 14% годовых</span></span><span class="fig"><span class="in">+${rub(Math.round(st.pig*.14/12))}</span><br>в месяц</span></button>`);
  accs.push(`<button class="acc" data-a="say" data-v="Бизнес-карта"><span class="l"><span class="bal">${st.cardOn?'250 000,00 ₽':'Бизнес-карта'}<i class="cd"></i></span><span class="sub" style="display:block">${st.cardOn?'Карта ••7781 · лимит на закупки':'Выпустить бесплатно'}</span></span></button>`);
  el.innerHTML=`<div class="hrow"><button class="ib" data-a="go" data-v="profile" aria-label="Профиль">${ic('user')}</button><button class="org" data-a="orgs"><span>${st.stage=='new'?'ИП Петров А. С.':ORG.short}</span>${ic('down')}</button><button class="ib" data-a="search" aria-label="Поиск">${ic('search')}</button><button class="ib" data-a="notif" aria-label="Уведомления">${ic('bell')}<span class="dot"></span></button></div>
- <div class="accs" id="accs"><button class="qrt" data-a="scan" aria-label="Оплатить по QR">${ic('scan')}</button>${accs.join('')}</div><div class="dots" id="dots">${accs.map((_,i)=>`<i class="${i==0?'on':''}"></i>`).join('')}</div>`;
+ <div class="acw"><div><div class="accs" id="accs"><button class="qrt" data-a="scan" aria-label="Оплатить по QR">${ic('scan')}</button>${accs.join('')}</div><div class="dots" id="dots">${accs.map((_,i)=>`<i class="${i==0?'on':''}"></i>`).join('')}</div></div></div><button class="hdl" data-a="expand" aria-label="Показать счета"><i></i></button>`;
  const a=document.getElementById('accs');a.addEventListener('scroll',()=>{const w=a.querySelector('.acc').offsetWidth+8;const i=Math.round(a.scrollLeft/w);document.querySelectorAll('#dots i').forEach((d,k)=>d.classList.toggle('on',k==i))},{passive:true})}
 function drawStrip(){const el=document.getElementById('strip');if(!el)return;
  const T=[['tax','Оплатите налоги','Налоги'],['bill','Оплатите счёт','Счета к оплате'],['sign','На подпись','На подпись']].filter(([k])=>st.t[k]>0);
@@ -530,9 +545,10 @@ function showTyping(){const t=document.getElementById('ty');if(t){t.innerHTML='<
 function hideTyping(){const t=document.getElementById('ty');if(t)t.innerHTML=''}
 
 /* ================= Profile view ================= */
+const COVER=`<div class="cvr" aria-label="надо крутиться, бизнес, Москва, сами понимаете" role="img"><svg class="tx" aria-hidden="true"><defs><filter id="fab"><feTurbulence type="fractalNoise" baseFrequency=".9 .35" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .1  0 0 0 0 .2  0 0 0 .9 0"/></filter><filter id="knit"><feTurbulence type="fractalNoise" baseFrequency="1.2 .5" numOctaves="1" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.4"/></filter><pattern id="rib" width="3" height="3" patternUnits="userSpaceOnUse"><rect width="1.4" height="3" fill="rgba(90,10,35,.35)"/></pattern></defs><rect width="100%" height="100%" filter="url(#fab)"/><rect width="100%" height="100%" fill="url(#rib)" opacity=".5"/></svg><svg class="lt" viewBox="0 0 340 92" aria-hidden="true"><g filter="url(#knit)" fill="rgba(238,228,234,.93)" font-family="'Exo 2',Onest,sans-serif" font-weight="600" font-size="28"><text x="170" y="34" text-anchor="middle" textLength="300" lengthAdjust="spacingAndGlyphs">надо крутиться, бизнес,</text><text x="170" y="76" text-anchor="middle" textLength="322" lengthAdjust="spacingAndGlyphs">Москва, сами понимаете</text></g></svg></div>`;
 function profileHTML(){const nw=st.stage=='new';const done=LSTEPS.filter(stepDone).length;const ns=LSTEPS.find(s=>!stepDone(s));
  const recs=nw?[{t:'Реквизиты для оплат',p:'Отправьте поставщикам и первым клиентам.',tag:'Готово',i:'req'},{t:'Получить оплату по QR',p:'Комиссия 0,4% — дешевле карт.',tag:'Выгода',i:'qrpay'},{t:'Подбор локации',p:'Три района под пекарню-кофейню.',tag:'Шаг запуска',tc:'o',i:'launch'},{t:'Бизнес-карта',p:'Разделите личные и бизнес-траты с первого дня.',tag:'Сервис',i:'card'}]:RECS;
- return `<div class="prof" id="prof"><div class="hero" style="${st.cover?`background:url(${st.cover}) center/cover`:''}"><div class="hb"><button class="gb" data-a="go" data-v="home" aria-label="Назад">${ic('back')}</button><div style="display:flex;gap:8px"><button class="gb" data-a="settings" aria-label="Настройки">${ic('gear')}</button><button class="gb" data-a="logout" aria-label="Выйти">${ic('logout')}</button></div></div><button class="cov" data-a="cover">${ic('image').replace('<svg','<svg style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:4px"')}Обложка</button></div>
+ return `<div class="prof" id="prof"><div class="hero" style="${st.cover?`background:url(${st.cover}) center/cover`:''}">${st.cover?'':COVER}<div class="hb"><button class="gb" data-a="go" data-v="home" aria-label="Назад">${ic('back')}</button><div style="display:flex;gap:8px"><button class="gb" data-a="settings" aria-label="Настройки">${ic('gear')}</button><button class="gb" data-a="logout" aria-label="Выйти">${ic('logout')}</button></div></div><button class="cov" data-a="cover">${ic('image').replace('<svg','<svg style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:4px"')}Обложка</button></div>
  <div class="pbody">
   <section class="pcard first"><div class="ava"><div>${nw?'АП':ORG.ini}</div></div>
    <div class="lvl">${nw?'Вы — на старте':'Вы — развиваетесь'}<span class="bar"><i style="width:${nw?done/LSTEPS.length*100:72}%"></i></span></div>
@@ -557,8 +573,12 @@ function render(){const app=document.getElementById('app');app.dataset.theme=st.
  <div id="view">${v=='home'?homeHTML():profileHTML()}</div>
  <div class="ov" id="ov" data-a="close"></div><div class="sh" id="sh" role="dialog" aria-modal="true" aria-hidden="true"></div><div class="toast" id="toast" role="status"></div>`;
  if(v=='home'){drawTop();drawStrip();drawFeed(true);const f=document.getElementById('cf'),q=document.getElementById('q'),go=document.getElementById('go');
-  q.addEventListener('input',()=>go.classList.toggle('on',!!q.value.trim()));
+  q.addEventListener('input',()=>{go.classList.toggle('on',!!q.value.trim());if(q.value.trim())setCmp(true)});
+  document.getElementById('top').addEventListener('click',e=>{if(cmp&&!e.target.closest('.ib')){e.stopPropagation();setCmp(false)}});
+  setCmp(cmp,1);
   f.addEventListener('submit',e=>{e.preventDefault();const t=q.value.trim();if(!t)return;q.value='';go.classList.remove('on');say(t)})}}
+let cmp=false;
+function setCmp(v,silent){cmp=!!v;const a=document.getElementById('app');a.classList.toggle('cmp',cmp)}
 function drawAll(){if(st.view=='profile'){render();return}drawTop();drawStrip();const f=document.getElementById('feed');const y=f?f.scrollTop:0;drawFeed();if(f)f.scrollTop=y}
 
 /* ================= Sheets ================= */
@@ -571,6 +591,7 @@ function toChat(text,intent,arg){closeSheet();if(st.view!='home'){st.view='home'
 /* ================= Actions ================= */
 const A={
  close:closeSheet,
+ expand:()=>setCmp(false),
  say:v=>toChat(v),
  tochat:v=>{const map={req:'Реквизиты',loyalty:'Лояльность клиентов',card:'Бизнес-карта',credit:'Кредит на развитие',piggy:'Открыть копилку',qrpay:'Получить оплату по QR',product:'Карточка товара',plan:'План роста выручки',report:'Финансовая отчётность',growth:'План роста выручки',launch:'Следующий шаг запуска'};toChat(map[v]||'Реквизиты',v=='growth'?'plan':v)},
  wa:(v,el)=>{const m=st.msgs.find(x=>x.id==+el.dataset.id);if(m)wAct(m,v)},
